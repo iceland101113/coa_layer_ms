@@ -3,7 +3,8 @@ class CategoriesController < ApplicationController
   before_action :set_category
 
   def index
-    @categories = Category.page(params[:page]).per(10)
+    @categories = Category.page(params[:page]).per(15)
+    @categories_count = Category.count
 
   end
 

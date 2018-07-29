@@ -1,12 +1,5 @@
 <div class="container">
-
-  <h1>農委會圖層管理系統</h1>
-  <div>
-    <%= link_to '圖層總覽', layers_path %> | <%= link_to '分類總覽', categories_path %>
-  </div>
-
-
-
+  <h3>共 <%= @categories_count %> 筆分類資訊</h3>
   <div class="row">
 
     <div class="col-md-12">
@@ -22,7 +15,7 @@
           <% end %>
         <% end %>
       </div>
-
+      <br>
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
@@ -36,7 +29,7 @@
           <tr>
             <th scope="row"><%= category.id %></th>
             <td><%= category.name %></td>
-            <td><%= link_to 'Edit', categories_path(id: category.id) %> | <%= link_to 'Delete', category_path(category), method: :delete, data: { confirm: "Are you sure?"} %></td>
+            <td><%= link_to '<span class="glyphicon glyphicon-pencil">編輯</span>'.html_safe, categories_path(id: category.id) %>  <%= link_to '<span class="glyphicon glyphicon-trash">刪除</span>'.html_safe, category_path(category), method: :delete, data: { confirm: "Are you sure?"} %></td>
           </tr>
           <% end %>
         </tbody>

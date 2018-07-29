@@ -2,7 +2,9 @@ class LayersController < ApplicationController
   before_action :set_layer, only: [:edit, :update, :destroy]
 
   def index
-    @layers = Layer.includes(:category).all
+    @layers = Layer.includes(:category).page(params[:page]).per(15)
+    @categories = Category.all
+    @layers_count = Layer.count
   end
 
   def new
@@ -37,6 +39,32 @@ class LayersController < ApplicationController
     @layer.destroy
     redirect_to root_path
     flash[:alert] = "layer was deleted"
+  end
+
+  def ca_layer
+    year = params[:year]
+    layers = Layer.includes(:category).where(cadastralize: year).page(params[:page]).per(15)
+    layers_count = Layer.includes(:category).where(cadastralize: year).size  
+
+    render :json => { :layers => layers, :counts => layers_count }
+  end
+
+  def query_layer
+    key_words = params[:key_words]
+    layers = Layer.includes(:category).keywords(key_words).page(params[:page]).per(15)
+    layers_count = Layer.includes(:category).keywords(key_words).size
+
+    render :json => { :layers => layers, :counts => layers_count }
+  end
+
+  def query_category
+    category = params[:category]
+   
+    layers = Layer.where(category_id: category).page(params[:page]).per(15)
+    layers_count = Layer.where(category_id: category).size
+
+    render :json => { :layers => layers, :counts => layers_count}
+
   end
 
 

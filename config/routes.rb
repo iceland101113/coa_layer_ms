@@ -4,4 +4,8 @@ Rails.application.routes.draw do
   root "layers#index"
 
   resources :categories
+
+  get "ca_layer", to: "layers#ca_layer"
+  get "query_layer", to: "layers#query_layer"
+  get "query_category", to: "layers#query_category"
 end

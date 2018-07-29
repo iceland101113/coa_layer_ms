@@ -1,18 +1,41 @@
 <div class="container">
+  <%= link_to '查看全部', root_path, class: "btn btn-default" %>
+  <br>
 
-  <h1>農委會圖層管理系統</h1>
-  <div>
-    <%= link_to '圖層總覽', layers_path %> | <%= link_to '分類總覽', categories_path %>
-  </div>
+  <hr>
+  <h3><span id="layer-count">總共 <%= @layers_count %> 筆圖資資訊</span></h3>
   <div class="row">
 
     <div class="col-md-12">
 
-      <div>
-        <%= link_to '新增圖層', new_layer_path, class: "btn btn-primary" %>
+      <div style="margin-right: 50px;display:inline-block">
+        <input type="text_area" id="key-words" placeholder="請輸入查詢關鍵字"/>
+        <button id="query-layer" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
       </div>
+      
+      <div style="margin-right: 50px;display:inline-block">
+        <strong>分類查詢：</strong><form style="display:inline-block">
+          <select id="select_category" name="YourLocation">
+            <option value="0">請選擇圖資分類</option>
+            <% @categories.each do |category| %>
+      　       <option value="<%= category.id %>"><%= category.name%></option>
+            <% end %>
+          </select>
+        </form>
+        <button id="query-category" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+      </div>
+
+      
+      <div style="display:inline-block"> 
+        <strong>地籍化圖資：</strong><input type="text_area" id="cadastralize-year" placeholder="請輸入查詢年度"/>
+        <button id="find-cadastralize-layer" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+      </div>
+
+      <%= link_to '新增圖層', new_layer_path, class: "btn btn-primary pull-right" %>
+
       <br>
-      <table class="table table-striped table-bordered">
+      <br>
+      <table id="layer-table" class="table table-striped table-bordered">
         <thead>
           <tr>
             <th>圖資名稱</th>
@@ -21,34 +44,32 @@
             <th>提供單位</th>
             <th>圖資格式</th>
             <th>存放位置</th>
-            <th>用於地籍化?</th>
             <th>備註</th>
             <th>#</th>
           </tr>
         </thead>
         <tbody>
-          <% @layers.each do |layer| %>
-          <tr>
-            <td><%= layer.title %></td>
-            <td><% if layer.category == nil %><%= nil %><% else %><%= layer.category.name %><% end %>
-            <td><%= layer.year %></td>
-            <th><%= layer.owner %></th>
-            <th><%= layer.format %></th>
-            <th><%= layer.position %></th>
-            <th><%= layer.cadastralize %></th>
-            <th><%= layer.description %></th>
-            <td>
-              <%= link_to 'Edit', edit_layer_path(layer) %>
-              <%= link_to 'Delete', layer_path(layer), method: :delete, data: {confirm:"Are you sure?"} %>
-            </td>
-          </tr>
-          <% end %>
+            <% @layers.each do |layer| %>
+            <tr>
+              <td><%= layer.title %></td>
+              <td><%= layer.category.name %></td>
+              <td><%= layer.year %></td>
+              <th><%= layer.owner %></th>
+              <th><%= layer.format %></th>
+              <th><%= layer.position %></th>
+              <th><%= layer.description %></th>
+              <td>
+                <%= link_to '<span class="glyphicon glyphicon-pencil">編輯</span>'.html_safe, edit_layer_path(layer) %> 
+                <%= link_to '<span class="glyphicon glyphicon-trash">刪除</span>'.html_safe, layer_path(layer), method: :delete, data: {confirm:"Are you sure?"} %>
+              </td>
+            </tr>
+            <% end %>
         </tbody>
       </table>
 
       
       <div class="text-center">
-        <!-- 分頁 -->
+        <%= paginate @layers %>
       </div>
 
     </div>
@@ -56,3 +77,95 @@
   </div>
 
 </div>
+<script>
+
+  $("#query-layer").on("click", function(event){
+    var key_words = $("#key-words").val();
+    $.ajax({
+      url: "/query_layer",
+      method: "GET",
+      dataType: "json",
+      data: {
+        key_words: key_words,
+      },
+      success: function(data) {
+        console.log(data["counts"]);
+        console.log(data["layers"]);
+        var count_text = $("#layer-count");
+        count_text.html('查詢結果： 共'+data["counts"]+'筆圖資');
+          var tableContentHTML = '<thead><tr><th>圖資名稱</th><th>圖資分類</th><th>圖資年份</th><th>提供單位</th><th>圖資格式</th><th>存放位置</th><th>備註</th><th>#</th></tr></thead><tbody>'
+
+          for ( i=0; i<data["counts"]; i++ ) {
+            tableContentHTML = tableContentHTML + '<td>' + data["layers"][i]["title"] + '</td>'+ '<td>' + data["layers"][i]["category"]["name"] + '</td>' + '<td>' + data["layers"][i]["year"] + '</td>' + '<td>' + data["layers"][i]['owner'] + '</td>' + '<td>' + data["layers"][i]['format'] + '</td>' + '<td>' + data["layers"][i]['position'] + '</td>' + '<td>' + data["layers"][i]['description'] + '</td>' + '<td>' + '<a href="/layers/'+ data["layers"][i]['id'] +'/edit"><span class="glyphicon glyphicon-pencil">編輯</span></a>' + '<a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/layers/'+ data["layers"][i]['id'] +'"><span class="glyphicon glyphicon-trash">刪除</span></a></td></tr></tbody>'
+          }
+          console.log(tableContentHTML)
+          var tableContent = $("#layer-table");
+          // tableContent.empty();
+          tableContent.html(tableContentHTML);
+        
+      }
+
+    });
+  });
+
+  $("#query-category").on("click", function(event){
+    var select_category = $("#select_category").val();
+    console.log(select_category);
+    $.ajax({
+      url: "/query_category",
+      method: "GET",
+      dataType: "json",
+      data: {
+        category: select_category
+      },
+      success: function(data) {
+        console.log(data["counts"]);
+        console.log(data["layers"]);
+        var count_text = $("#layer-count");
+        count_text.html('查詢結果： 共'+data["counts"]+'筆圖資');
+          var tableContentHTML = '<thead><tr><th>圖資名稱</th><th>圖資分類</th><th>圖資年份</th><th>提供單位</th><th>圖資格式</th><th>存放位置</th><th>備註</th><th>#</th></tr></thead><tbody>'
+
+          for ( i=0; i<data["counts"]; i++ ) {
+            tableContentHTML = tableContentHTML + '<td>' + data["layers"][i]["title"] + '</td>'+ '<td>' + data["layers"][i]["category"]["name"] + '</td>' + '<td>' + data["layers"][i]["year"] + '</td>' + '<td>' + data["layers"][i]['owner'] + '</td>' + '<td>' + data["layers"][i]['format'] + '</td>' + '<td>' + data["layers"][i]['position'] + '</td>' + '<td>' + data["layers"][i]['description'] + '</td>' + '<td>' + '<a href="/layers/'+ data["layers"][i]['id'] +'/edit"><span class="glyphicon glyphicon-pencil">編輯</span></a>' + '<a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/layers/'+ data["layers"][i]['id'] +'"><span class="glyphicon glyphicon-trash">刪除</span></a></td></tr></tbody>'
+          }
+          console.log(tableContentHTML)
+          var tableContent = $("#layer-table");
+          // tableContent.empty();
+          tableContent.html(tableContentHTML);
+        
+      }
+
+    });
+  }); 
+
+  $("#find-cadastralize-layer").on("click", function(event){
+    var year = $("#cadastralize-year").val();
+    console.log(year);
+      $.ajax({
+        url: "/ca_layer",
+        method: "GET",
+        dataType: "json",
+        data: {
+          year: year
+        },
+        success: function(data) {
+          console.log(data["counts"]);
+          console.log(data["layers"]);
+          var count_text = $("#layer-count");
+          count_text.html('查詢結果： 共'+data["counts"]+'筆圖資');
+          var tableContentHTML = '<thead><tr><th>圖資名稱</th><th>圖資分類</th><th>圖資年份</th><th>提供單位</th><th>圖資格式</th><th>存放位置</th><th>備註</th><th>#</th></tr></thead><tbody>'
+
+          for ( i=0; i<data["counts"]; i++ ) {
+            tableContentHTML = tableContentHTML + '<td>' + data["layers"][i]["title"] + '</td>'+ '<td>' + data["layers"][i]["category"]["name"] + '</td>' + '<td>' + data["layers"][i]["year"] + '</td>' + '<td>' + data["layers"][i]['owner'] + '</td>' + '<td>' + data["layers"][i]['format'] + '</td>' + '<td>' + data["layers"][i]['position'] + '</td>' + '<td>' + data["layers"][i]['description'] + '</td>' + '<td>' + '<a href="/layers/'+ data["layers"][i]['id'] +'/edit"><span class="glyphicon glyphicon-pencil">編輯</span></a>' + '<a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/layers/'+ data["layers"][i]['id'] +'"><span class="glyphicon glyphicon-trash">刪除</span></a></td></tr></tbody>'
+          }
+          console.log(tableContentHTML)
+          var tableContent = $("#layer-table");
+          // tableContent.empty();
+          tableContent.html(tableContentHTML);
+
+        }
+
+      });
+  });
+
+</script> 

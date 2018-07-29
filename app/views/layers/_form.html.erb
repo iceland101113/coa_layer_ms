@@ -9,8 +9,9 @@
         <% end %>
       </ul>
     <% end %>
-    <br>
 
+    <br>
+    <br>
     <%= form_for @layer do |f| %>
 
       <div class="form-group">
@@ -37,6 +38,11 @@
         <%= f.label :format, "圖資格式" %>
         <%= f.text_field :format, class: "form-control" %>
       </div>
+
+      <div class="form-group">
+        <%= f.label :cadastralize, "用於地籍化年份" %>
+        <%= f.text_field :cadastralize, class: "form-control" %>
+      </div>     
 
       <div class="form-group">
         <%= f.label :position, "存放位置" %>
