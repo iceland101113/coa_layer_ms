@@ -28,8 +28,11 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="pull-right text-right nav navbar-nav">
-            <li><%= link_to('圖層總覽', root_path) %></li>
-            <li><%= link_to('分類總覽', categories_path) %></li>
+            <% if current_user %>
+              <li><%= link_to('圖層總覽', root_path) %></li>
+              <li><%= link_to('分類總覽', categories_path) %></li>
+              <li><%= link_to('登出', destroy_user_session_path, method: :delete) %></li>
+            <% end %>
           </ul>
         </div>
       </div>
