@@ -2,7 +2,7 @@
 
   <h1>農委會圖層管理系統</h1>
   <div>
-    <%= link_to '圖層總覽', layers_path %> | <%= link_to '分類總覽', layers_path %>
+    <%= link_to '圖層總覽', layers_path %> | <%= link_to '分類總覽', categories_path %>
   </div>
   <div class="row">
 
@@ -15,13 +15,13 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>#</th>
             <th>圖資名稱</th>
-            <!-- <th>Category</th> -->
+            <th>圖資分類</th> 
             <th>圖資年份</th>
             <th>提供單位</th>
             <th>圖資格式</th>
             <th>存放位置</th>
+            <th>用於地籍化?</th>
             <th>備註</th>
             <th>#</th>
           </tr>
@@ -29,13 +29,13 @@
         <tbody>
           <% @layers.each do |layer| %>
           <tr>
-            <th scope="row"><%= latey.id %></th>
             <td><%= layer.title %></td>
-           <!--  <td><% if layer.category == nil %><%= nil %><% else %><%= layer.category.name %><% end %></td> -->
+            <td><% if layer.category == nil %><%= nil %><% else %><%= layer.category.name %><% end %>
             <td><%= layer.year %></td>
             <th><%= layer.owner %></th>
             <th><%= layer.format %></th>
             <th><%= layer.position %></th>
+            <th><%= layer.cadastralize %></th>
             <th><%= layer.description %></th>
             <td>
               <%= link_to 'Edit', edit_layer_path(layer) %>

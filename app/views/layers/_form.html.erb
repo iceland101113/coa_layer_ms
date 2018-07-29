@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+
+    <% if @layer.errors.any? %>
+      <h4>We have some errors here !</h4>
+      <ul>
+        <% @layer.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <br>
+
+    <%= form_for @layer do |f| %>
+
+      <div class="form-group">
+        <%= f.label :title, "圖資名稱" %>
+        <%= f.text_field :title, class: "form-control" %>
+      </div>
+
+      <duv class="form-group">
+        <%= f.label :category_id, "圖資分類" %>
+        <%= f.collection_select :category_id, Category.all, :id, :name, {prompt: true}, {class: "form-control"} %>
+      </duv>
+
+      <div class="form-group">
+        <%= f.label :year, "圖資年份" %>
+        <%= f.text_field :year, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :owner, "提供單位" %>
+        <%= f.text_field :owner, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :format, "圖資格式" %>
+        <%= f.text_field :format, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :position, "存放位置" %>
+        <%= f.text_field :position, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :description, "備註" %>
+        <%= f.text_area :description, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.submit class: "btn btn-primary"%>
+      </div>
+    
+    <% end %>
+
+  </div>
+</div>
