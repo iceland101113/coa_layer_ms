@@ -41,30 +41,25 @@ class LayersController < ApplicationController
     flash[:alert] = "layer was deleted"
   end
 
-  def ca_layer
-    year = params[:year]
-    puts year
-    layers = Layer.includes(:category).where("cadastralize LIKE ?", "%#{year}%").page(params[:page]).per(15)
-    layers_count = Layer.includes(:category).where("cadastralize LIKE ?", "%#{year}%").size  
-
-    render :json => { :layers => layers, :counts => layers_count }
-  end
-
   def query_layer
     key_words = params[:key_words]
-    layers = Layer.includes(:category).keywords(key_words).page(params[:page]).per(15)
-    layers_count = Layer.includes(:category).keywords(key_words).size
+    @layers = Layer.includes(:category).keywords(key_words).page(params[:page]).per(15)
+    @layers_count = Layer.includes(:category).keywords(key_words).size
 
-    render :json => { :layers => layers, :counts => layers_count }
   end
 
   def query_category
-    category = params[:category]
-   
-    layers = Layer.where(category_id: category).page(params[:page]).per(15)
-    layers_count = Layer.where(category_id: category).size
+    category = params[:category_id]   
+    @layers = Layer.includes(:category).where(category_id: category).page(params[:page]).per(15)
+    @layers_count = Layer.where(category_id: category).size
 
-    render :json => { :layers => layers, :counts => layers_count}
+
+  end
+
+  def ca_layer
+    year = params[:year]
+    @layers = Layer.includes(:category).where("cadastralize LIKE ?", "%#{year}%").page(params[:page]).per(15)
+    @layers_count = Layer.includes(:category).where("cadastralize LIKE ?", "%#{year}%").size  
 
   end
 

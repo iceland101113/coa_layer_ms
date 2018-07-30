@@ -1,7 +1,46 @@
-   table {
+   .table1 {
     border-collapse: collapse;
-    width: 770px;   
+     
     /*自動斷行*/
     word-wrap: break-word;
     table-layout: fixed;
+   }
+
+   .table2 {
+    border-collapse: collapse;
+    width: 700px;
+    /*自動斷行*/
+    word-wrap: break-word;
+    table-layout: fixed;
+    margin: 0 auto;
+   }
+
+   th {
+    text-align:center;
+   }
+
+
+   .td1 {
+    text-align:center;
+   }
+
+   .td-s {
+    width: 100px;
+   }
+
+  .td-ss {
+    width: 75px;
+   }
+
+  .td-m {
+    width: 150px;
+   }
+
+  .td-mm {
+    width: 150px;
+   }
+
+   .category_num {
+    margin-left: 250px;
+    
    }

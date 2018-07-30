@@ -20,12 +20,12 @@
       </div>
 
       <duv class="form-group">
-        <%= f.label :category_id, "圖資分類" %>
+        <%= f.label :category_id, "分類" %>
         <%= f.collection_select :category_id, Category.all, :id, :name, {prompt: true}, {class: "form-control"} %>
       </duv>
 
       <div class="form-group">
-        <%= f.label :year, "圖資年份" %>
+        <%= f.label :year, "年份" %>
         <%= f.text_field :year, class: "form-control" %>
       </div>
 
@@ -35,7 +35,7 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :format, "圖資格式" %>
+        <%= f.label :format, "格式" %>
         <%= f.text_field :format, class: "form-control" %>
       </div>
 

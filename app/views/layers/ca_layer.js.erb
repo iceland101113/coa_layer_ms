@@ -1,0 +1,5 @@
+var content = "<%= j render(:partial => 'table', :locals => { :layers => @layers }) %>";
+$("#big-table").html(content);
+
+var count = "查詢結果： 共 <%= @layers_count %> 筆圖資"
+$("#layer-count").html(count);

@@ -1,0 +1,36 @@
+      <table class="table table1 table-striped table-bordered" style="background-color: lightgrey;">
+        <thead>
+          <tr>
+            <th>圖資名稱</th>
+            <th class="td-mm">分類</th> 
+            <th class="td-ss">年份</th>
+            <th class="td-m">提供單位</th>
+            <th class="td-ss">格式</th>
+            <th>存放位置</th>
+            <th class="td-mm">備註</th>
+            <th class="td-ss">#</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% layers.each do |layer| %>
+            <tr>
+              <td class="td1"><strong><%= layer.title %></strong></td>
+              <td class="td1 td-mm"><%= layer.category.name %></td>
+              <td class="td1 td-ss"><%= layer.year %></td>
+              <td class="td1 td-m"><%= layer.owner %></td>
+              <td class="td1 td-ss"><%= layer.format %></td>
+              <td><%= layer.position %></td>
+              <td class="td-mm"><%= layer.description %></td>
+              <td class="td1 td-ss">
+                <%= link_to '<span class="glyphicon glyphicon-pencil">編輯</span>'.html_safe, edit_layer_path(layer) %> 
+                <%= link_to '<span class="glyphicon glyphicon-trash">刪除</span>'.html_safe, layer_path(layer), method: :delete, data: {confirm:"Are you sure?"} %>
+              </td>
+            </tr>
+            <% end %>
+        </tbody>
+      </table>
+
+      
+      <div class="text-center">
+        <%= paginate layers %>
+      </div>
