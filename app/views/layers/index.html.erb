@@ -1,5 +1,5 @@
 <div class="container">
-  <%= link_to '查看全部', root_path, class: "btn btn-default" %>
+  <%= link_to '<strong>查看全部</strong>'.html_safe, root_path, class: "btn btn-default" %>
   <br>
 
   <hr>
@@ -32,7 +32,7 @@
         <button id="find-cadastralize-layer" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
       </div>
 
-      <%= link_to '新增圖層', new_layer_path, class: "btn btn-primary pull-right" %>
+      <%= link_to '<strong>新增圖層</strong>'.html_safe, new_layer_path, class: "btn btn-primary pull-right" %>
 
       <br>
       <br>
@@ -55,10 +55,10 @@
               <td><%= layer.title %></td>
               <td><%= layer.category.name %></td>
               <td><%= layer.year %></td>
-              <th><%= layer.owner %></th>
-              <th><%= layer.format %></th>
-              <th><%= layer.position %></th>
-              <th><%= layer.description %></th>
+              <td><%= layer.owner %></td>
+              <td><%= layer.format %></td>
+              <td><%= layer.position %></td>
+              <td><%= layer.description %></td>
               <td>
                 <%= link_to '<span class="glyphicon glyphicon-pencil">編輯</span>'.html_safe, edit_layer_path(layer) %> 
                 <%= link_to '<span class="glyphicon glyphicon-trash">刪除</span>'.html_safe, layer_path(layer), method: :delete, data: {confirm:"Are you sure?"} %>

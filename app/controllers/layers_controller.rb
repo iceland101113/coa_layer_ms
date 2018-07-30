@@ -43,8 +43,9 @@ class LayersController < ApplicationController
 
   def ca_layer
     year = params[:year]
-    layers = Layer.includes(:category).where(cadastralize: year).page(params[:page]).per(15)
-    layers_count = Layer.includes(:category).where(cadastralize: year).size  
+    puts year
+    layers = Layer.includes(:category).where("cadastralize LIKE ?", "%#{year}%").page(params[:page]).per(15)
+    layers_count = Layer.includes(:category).where("cadastralize LIKE ?", "%#{year}%").size  
 
     render :json => { :layers => layers, :counts => layers_count }
   end
