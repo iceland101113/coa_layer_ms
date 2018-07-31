@@ -33,8 +33,10 @@
           <%= submit_tag '查詢', class: "btn btn-default" %>
         <% end %>
       </div>
-
-      <%= link_to '<strong>新增圖層</strong>'.html_safe, new_layer_path, class: "btn btn-primary pull-right" %>
+      
+      <% if current_user %>
+        <%= link_to '<strong>新增圖層</strong>'.html_safe, new_layer_path, class: "btn btn-primary pull-right" %>
+      <% end %>
 
       <br>
       <br>
