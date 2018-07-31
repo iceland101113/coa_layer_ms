@@ -4,7 +4,8 @@ class LayersController < ApplicationController
   def index
     @layers = Layer.includes(:category).page(params[:page]).per(15)
     @categories = Category.all
-    @layers_count = Layer.count
+    @layers_count = @layers.total_count
+
   end
 
   def new
@@ -44,14 +45,16 @@ class LayersController < ApplicationController
   def query_layer
     key_words = params[:key_words]
     @layers = Layer.includes(:category).keywords(key_words).page(params[:page]).per(15)
-    @layers_count = Layer.includes(:category).keywords(key_words).size
+    @layers_count = @layers.total_count
+    @categories = Category.all
 
   end
 
   def query_category
     category = params[:category_id]   
     @layers = Layer.includes(:category).where(category_id: category).page(params[:page]).per(15)
-    @layers_count = Layer.where(category_id: category).size
+    @layers_count = @layers.total_count
+    @categories = Category.all
 
 
   end
@@ -59,7 +62,8 @@ class LayersController < ApplicationController
   def ca_layer
     year = params[:year]
     @layers = Layer.includes(:category).where("cadastralize LIKE ?", "%#{year}%").page(params[:page]).per(15)
-    @layers_count = Layer.includes(:category).where("cadastralize LIKE ?", "%#{year}%").size  
+    @layers_count = @layers.total_count  
+    @categories = Category.all    
 
   end
 
@@ -73,5 +77,6 @@ class LayersController < ApplicationController
   def set_layer
     @layer = Layer.find(params[:id])
   end
+
 
 end

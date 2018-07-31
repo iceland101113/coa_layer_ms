@@ -1,0 +1,49 @@
+<div class="container">
+  <%= link_to '<strong>查看全部</strong>'.html_safe, root_path, class: "btn btn-default" %>
+  <br>
+
+  <hr>
+  <h3><span id="layer-count">總共 <%= @layers_count %> 筆圖資資訊</span></h3>
+  <br>
+  <div class="row">
+
+    <div class="col-md-12">
+      <div style="display: inline-block;margin-right: 30px;">
+        <%= form_tag('/query_layer', method: "get", remote: true) do %>
+          <%= text_field_tag 'key_words', nil, :placeholder=>"請輸入查詢關鍵字" %>
+          <%= submit_tag '查詢', class: "btn btn-default" %>
+        <% end %>
+      </div>
+
+      <div style="display: inline-block;margin-right: 30px;">
+        <%= form_tag('/query_category', method: "get", remote: true) do %>
+          分類查詢：<%= select_tag 'category_id', options_for_select(@categories.collect{ |c| [c.name, c.id] }.insert(0,"請選擇")) %>
+          <%= submit_tag '查詢', class: "btn btn-default" %>
+        <% end %>  
+      </div>   
+
+      
+<!--       <div style="display:inline-block"> 
+        <strong>地籍化圖資：</strong><input type="text_area" id="cadastralize-year" placeholder="請輸入查詢年度"/>
+        <button id="find-cadastralize-layer" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>form_tag('/ca_layer', method: "get", {remote: true})
+      </div> -->
+      <div style="display: inline-block;">
+        <%= form_tag('/ca_layer', method: "get", remote: true) do %>
+          地籍化圖資：<%= text_field_tag 'year', nil, :placeholder=>"請輸入查詢年度" %>
+          <%= submit_tag '查詢', class: "btn btn-default" %>
+        <% end %>
+      </div>
+
+      <%= link_to '<strong>新增圖層</strong>'.html_safe, new_layer_path, class: "btn btn-primary pull-right" %>
+
+      <br>
+      <br>
+      <div id="big-table">
+        <%= render partial: "table", locals: {layers: @layers} %>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

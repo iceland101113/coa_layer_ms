@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-
+  before_action :authenticate_user!
   before_action :set_category
 
   def index
@@ -35,6 +35,8 @@ class CategoriesController < ApplicationController
     flash[:alert] = "category was successfully deleted"
     redirect_to categories_path
   end
+
+  
 
   private
 

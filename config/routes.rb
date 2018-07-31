@@ -6,9 +6,8 @@ Rails.application.routes.draw do
 
   resources :categories
 
-  post "ca_layer", to: "layers#ca_layer"
-  post "query_layer", to: "layers#query_layer"
-  post "query_category", to: "layers#query_category"
+  get "ca_layer", to: "layers#ca_layer"
+  get "query_layer", to: "layers#query_layer"
+  get "query_category", to: "layers#query_category"
 
-  post "test_layer", to: "layers#test"
 end
