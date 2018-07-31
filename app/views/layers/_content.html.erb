@@ -11,14 +11,18 @@
       <div style="display: inline-block;margin-right: 30px;">
         <%= form_tag('/query_layer', method: "get", remote: true) do %>
           <%= text_field_tag 'key_words', nil, :placeholder=>"請輸入查詢關鍵字" %>
-          <%= submit_tag '查詢', class: "btn btn-default" %>
+          <%= button_tag :type => "submit", :class => "btn btn-default btn-sm" do %>
+            <i class="glyphicon glyphicon-search"></i>
+          <% end %>
         <% end %>
       </div>
 
       <div style="display: inline-block;margin-right: 30px;">
         <%= form_tag('/query_category', method: "get", remote: true) do %>
           分類查詢：<%= select_tag 'category_id', options_for_select(@categories.collect{ |c| [c.name, c.id] }.insert(0,"請選擇")) %>
-          <%= submit_tag '查詢', class: "btn btn-default" %>
+          <%= button_tag :type => "submit", :class => "btn btn-default btn-sm" do %>
+            <i class="glyphicon glyphicon-search"></i>
+          <% end %>
         <% end %>  
       </div>   
 
@@ -30,7 +34,9 @@
       <div style="display: inline-block;">
         <%= form_tag('/ca_layer', method: "get", remote: true) do %>
           地籍化圖資：<%= text_field_tag 'year', nil, :placeholder=>"請輸入查詢年度" %>
-          <%= submit_tag '查詢', class: "btn btn-default" %>
+          <%= button_tag :type => "submit", :class => "btn btn-default btn-sm" do %>
+            <i class="glyphicon glyphicon-search"></i>
+          <% end %>
         <% end %>
       </div>
       
